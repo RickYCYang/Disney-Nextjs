@@ -11,7 +11,7 @@ import Login from "../../components/Login";
 import ReactPlayer from "react-player/lazy";
 
 const Movie = ({ result }) => {
-  const BASE_URL = "https://image.tmdb.org/t/p/original/";
+  const tmbdImageBaseUrl = process.env.NEXT_PUBLIC_TMBD_IMAGE_BASE_URL;
   const [session] = useSession();
   const [showPlayer, setShowPlayer] = useState(false);
   const router = useRouter();
@@ -40,8 +40,9 @@ const Movie = ({ result }) => {
           <div className="relative min-h-[calc(100vh-72px)]">
             <Image
               src={
-                `${BASE_URL}${result.backdrop_path || result.poster_path}` ||
-                `${BASE_URL}${result.poster_path}`
+                `${tmbdImageBaseUrl}${
+                  result.backdrop_path || result.poster_path
+                }` || `${tmbdImageBaseUrl}${result.poster_path}`
               }
               layout="fill"
               objectFit="cover"
@@ -58,6 +59,7 @@ const Movie = ({ result }) => {
               <button
                 className="text-xs md:text-base bg-[#f9f9f9] text-black flex items-center justify-center 
                 py-2.5 px-6 rounded hover:bg-[#c6c6c6]"
+                onClick={() => setShowPlayer(true)}
               >
                 <img
                   src="/images/play-icon-black.svg"

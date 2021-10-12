@@ -10,7 +10,7 @@ import ReactPlayer from "react-player/lazy";
 
 function Show({ result }) {
   const [session] = useSession();
-  const BASE_URL = "https://image.tmdb.org/t/p/original/";
+  const tmbdImageBaseUrl = process.env.NEXT_PUBLIC_TMBD_IMAGE_BASE_URL;
   const router = useRouter();
   const [showPlayer, setShowPlayer] = useState(false);
 
@@ -38,8 +38,9 @@ function Show({ result }) {
           <div className="relative min-h-[calc(100vh-72px)]">
             <Image
               src={
-                `${BASE_URL}${result.backdrop_path || result.poster_path}` ||
-                `${BASE_URL}${result.poster_path}`
+                `${tmbdImageBaseUrl}${
+                  result.backdrop_path || result.poster_path
+                }` || `${tmbdImageBaseUrl}${result.poster_path}`
               }
               layout="fill"
               objectFit="cover"

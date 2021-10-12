@@ -11,6 +11,7 @@ const Brands = () => {
         <video
           autoPlay
           loop
+          muted
           playsInline
           className="hidden group-hover:inline rounded-lg object-cover"
         >
@@ -22,6 +23,7 @@ const Brands = () => {
         <video
           autoPlay
           loop
+          muted
           playsInline
           className="hidden group-hover:inline rounded-lg object-cover"
         >
@@ -33,6 +35,7 @@ const Brands = () => {
         <Image src="/images/marvel.png" layout="fill" objectFit="cover" />
         <video
           autoPlay
+          muted
           loop
           playsInline
           className="hidden group-hover:inline rounded-lg object-cover"
@@ -45,6 +48,7 @@ const Brands = () => {
         <Image src="/images/starwars.png" layout="fill" objectFit="cover" />
         <video
           autoPlay
+          muted
           loop
           playsInline
           className="hidden group-hover:inline rounded-lg object-cover"
@@ -62,6 +66,7 @@ const Brands = () => {
         <video
           autoPlay
           loop
+          muted
           playsInline
           className="hidden group-hover:inline rounded-lg object-cover"
         >
