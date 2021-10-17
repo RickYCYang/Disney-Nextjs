@@ -5,10 +5,10 @@ import { getSession, useSession } from "next-auth/client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 
-import { PlusIcon, XIcon } from "@heroicons/react/solid";
-import Header from "../../components/Header";
+import { PlusIcon } from "@heroicons/react/solid";
+import Layout from "../../components/layout";
 import Login from "../../components/Login";
-import ReactPlayer from "react-player/lazy";
+import TrailerModal from "../../components/TrailerModal";
 
 const Movie = ({ result }) => {
   const tmbdImageBaseUrl = process.env.NEXT_PUBLIC_TMBD_IMAGE_BASE_URL;
@@ -27,12 +27,11 @@ const Movie = ({ result }) => {
   }, [session]);
 
   return (
-    <div>
+    <Layout>
       <Head>
         <title>{result.title || result.original_name}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Header />
       {!session ? (
         <Login />
       ) : (
@@ -105,41 +104,15 @@ const Movie = ({ result }) => {
             <h4 className="text-sm md:text-lg max-w-4xl">{result.overview}</h4>
           </div>
           {/* Background Overlay */}
-          {showPlayer && (
-            <div className="absolute inset-0 bg-black opacity-50 h-full w-full z-50" />
-          )}
-          <div
-            className={`absolute top-3 inset-x-[7%] md:inset-x-[13%] rounded overflow-hidden 
-              transition duration-1000 
-              ${showPlayer ? "opacity-100 z-50" : "opacity-0"} 
-            `}
-          >
-            <div className="flex items-center justify-between bg-black text-[#f9f9f9] p-3.5">
-              <span className="font-semibold">Play Trailer</span>
-              <div
-                className="cursor-pointer w-8 h-8 flex justify-center items-center rounded-lg 
-                opacity-50 hover:opacity-75 hover:bg-[#0f0f0f]"
-                onClick={() => {
-                  setShowPlayer(false);
-                }}
-              >
-                <XIcon className="h-5" />
-              </div>
-            </div>
-            <div className="relative pt-[56.25%]">
-              <ReactPlayer
-                url={`https://www.youtube.com/watch?v=${result.videos?.results[index]?.key}`}
-                width="100%"
-                height="100%"
-                style={{ position: "absolute", top: "0", left: "0" }}
-                controls={true}
-                playing={showPlayer}
-              />
-            </div>
-          </div>
+          <TrailerModal
+            showPlayer={showPlayer}
+            result={result}
+            index={index}
+            setShowPlayer={setShowPlayer}
+          />
         </section>
       )}
-    </div>
+    </Layout>
   );
 };
 

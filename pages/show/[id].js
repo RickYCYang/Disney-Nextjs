@@ -3,10 +3,10 @@ import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import Header from "../../components/Header";
+import Layout from "../../components/layout";
 import Login from "../../components/Login";
-import { PlusIcon, XIcon } from "@heroicons/react/solid";
-import ReactPlayer from "react-player/lazy";
+import { PlusIcon } from "@heroicons/react/solid";
+import TrailerModal from "../../components/TrailerModal";
 
 function Show({ result }) {
   const [session] = useSession();
@@ -25,12 +25,11 @@ function Show({ result }) {
   );
 
   return (
-    <div className="relative">
+    <Layout>
       <Head>
         <title>{result.title || result.original_name}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Header />
       {!session ? (
         <Login />
       ) : (
@@ -51,7 +50,10 @@ function Show({ result }) {
               {result.title || result.original_name}
             </h1>
             <div className="flex items-center space-x-3 md:space-x-5">
-              <button className="text-xs md:text-base bg-[#f9f9f9] text-black flex items-center justify-center py-2.5 px-6 rounded hover:bg-[#c6c6c6]">
+              <button
+                className="text-xs md:text-base bg-[#f9f9f9] text-black flex items-center justify-center py-2.5 px-6 rounded hover:bg-[#c6c6c6]"
+                onClick={() => setShowPlayer(true)}
+              >
                 <img
                   src="/images/play-icon-black.svg"
                   alt=""
@@ -95,38 +97,15 @@ function Show({ result }) {
           </div>
 
           {/* Bg Overlay */}
-          {showPlayer && (
-            <div className="absolute inset-0 bg-black opacity-50 h-full w-full z-50"></div>
-          )}
-
-          <div
-            className={`absolute top-3 inset-x-[7%] md:inset-x-[13%] rounded overflow-hidden transition duration-1000 ${
-              showPlayer ? "opacity-100 z-50" : "opacity-0"
-            }`}
-          >
-            <div className="flex items-center justify-between bg-black text-[#f9f9f9] p-3.5">
-              <span className="font-semibold">Play Trailer</span>
-              <div
-                className="cursor-pointer w-8 h-8 flex justify-center items-center rounded-lg opacity-50 hover:opacity-75 hover:bg-[#0F0F0F]"
-                onClick={() => setShowPlayer(false)}
-              >
-                <XIcon className="h-5" />
-              </div>
-            </div>
-            <div className="relative pt-[56.25%]">
-              <ReactPlayer
-                url={`https://www.youtube.com/watch?v=${result.videos?.results[index]?.key}`}
-                width="100%"
-                height="100%"
-                style={{ position: "absolute", top: "0", left: "0" }}
-                controls={true}
-                playing={showPlayer}
-              />
-            </div>
-          </div>
+          <TrailerModal
+            showPlayer={showPlayer}
+            result={result}
+            index={index}
+            setShowPlayer={setShowPlayer}
+          />
         </section>
       )}
-    </div>
+    </Layout>
   );
 }
 
@@ -136,14 +115,15 @@ export async function getServerSideProps(context) {
   const session = await getSession(context);
   const { id } = context.query;
 
-  const request = await fetch(
+  const response = await fetch(
     `https://api.themoviedb.org/3/tv/${id}?api_key=${process.env.API_KEY}&language=en-US&append_to_response=videos`
-  ).then((response) => response.json());
+  );
+  const result = await response.json();
 
   return {
     props: {
       session,
-      result: request,
+      result: result,
     },
   };
 }

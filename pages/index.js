@@ -3,12 +3,11 @@ import Head from "next/head";
 /* next-auth */
 import { getSession, useSession } from "next-auth/client";
 /* components */
-import Header from "../components/Header";
+import Layout from "../components/layout";
 import Login from "../components/Login";
 import Slider from "../components/Slider";
 import Brands from "../components/Brands";
-import MoviesCollection from "../components/MoviesCollection";
-import ShowsCollection from "../components/ShowsCollection";
+import Collection from "../components/Collection";
 
 export default function Home({
   popularMovies,
@@ -18,31 +17,40 @@ export default function Home({
 }) {
   const [session] = useSession();
   return (
-    <div className="">
+    <Layout>
       <Head>
         <title>Disney+</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Header />
       {!session ? (
         <Login />
       ) : (
-        <main
-          className="relative min-h-screen after:bg-home after:bg-center 
-        after:bg-cover after:bg-no-repeat after:bg-fixed after:absolute after:inset-0 after:z-[-1] "
-        >
+        <>
           <Slider />
           <Brands />
-          <MoviesCollection results={popularMovies} title="Popular Movies" />
-          <ShowsCollection results={popularShows} title="Popular Shows" />
-          <MoviesCollection
+          <Collection
+            results={popularMovies}
+            title="Popular Movies"
+            type="movie"
+          />
+          <Collection
+            results={popularShows}
+            title="Popular Shows"
+            type="show"
+          />
+          <Collection
             results={top_ratedMovies}
             title="Top Rated Movies"
+            type="movie"
           />
-          <ShowsCollection results={top_ratedShows} title="Top Rated Shows" />
-        </main>
+          <Collection
+            results={top_ratedShows}
+            title="Top Rated Shows"
+            type="show"
+          />
+        </>
       )}
-    </div>
+    </Layout>
   );
 }
 
