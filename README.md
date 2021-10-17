@@ -1,5 +1,5 @@
 # Next.js + Tailwind CSS Example
-Demo: https://disney-nextjs-ten.vercel.app/.
+Demo: https://disney-nextjs-ten.vercel.app/.  
 Tutorial Video : https://www.youtube.com/watch?v=zMXHYSqltmU&ab_channel=ILWYennefer
 
 This example shows how to use [Tailwind CSS](https://tailwindcss.com/) [(v2.2)](https://blog.tailwindcss.com/tailwindcss-2-2) with Next.js. It follows the steps outlined in the official [Tailwind docs](https://tailwindcss.com/docs/guides/nextjs).
